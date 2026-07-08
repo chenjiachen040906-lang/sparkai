@@ -1,157 +1,115 @@
-# AI Chat - 智能对话助手
+# SparkAI - 智能对话助手
 
-一个基于 Next.js 构建的现代化 AI 对话应用，支持接入多种国内大模型（通义千问、智谱 GLM、DeepSeek、Moonshot 等）。
+一个基于 Next.js 14 构建的现代化 AI 对话应用，支持接入多种国内大模型（通义千问、智谱 GLM、DeepSeek、Moonshot 等）。
 
-## ✨ 功能特性
+## 一键部署
 
-- 🤖 **多模型支持** — 通义千问、智谱 GLM、DeepSeek、Moonshot（Kimi），一键切换
-- 💬 **流式响应** — 实时打字效果，逐字输出 AI 回复
-- 📝 **Markdown 渲染** — 支持代码高亮、表格、列表等富文本展示
-- 💾 **会话管理** — 多会话并行、历史对话持久化存储
-- 🌓 **暗色模式** — 一键切换浅色/深色主题
-- 📱 **响应式布局** — 完美适配桌面端和移动端
-- 🔒 **安全防护** — API 速率限制，防止滥用
-- 🚀 **一键部署** — 支持 Vercel、Docker 等多种部署方式
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fchenjiachen040906-lang%2Fsparkai)
 
-## 🚀 快速开始
+> 部署后在网页设置中填入你的 API Key 即可使用，无需配置环境变量。
+
+## 功能特性
+
+- **多模型支持** — 通义千问、智谱 GLM、DeepSeek v4、Moonshot（Kimi），一键切换
+- **深度思考** — 支持 DeepSeek v4 thinking mode，可折叠展示思考过程
+- **流式响应** — 实时打字效果，逐字输出 AI 回复
+- **Markdown 渲染** — 支持代码高亮、表格、列表等富文本展示
+- **Web 端配置** — 在网页设置面板直接填入 API Key，支持连接测试
+- **会话管理** — 多会话并行、历史对话持久化存储
+- **暗色模式** — 一键切换浅色/深色主题
+- **响应式布局** — 完美适配桌面端和移动端
+- **安全防护** — API 速率限制，防止滥用
+
+## 快速开始
 
 ### 1. 安装依赖
 
 ```bash
-cd ai-chat
+git clone https://github.com/chenjiachen040906-lang/sparkai.git
+cd sparkai
 npm install
 ```
 
-### 2. 配置环境变量
-
-复制环境变量模板文件：
-
-```bash
-cp .env.local.example .env.local
-```
-
-编辑 `.env.local`，填入你的 AI 模型 API Key：
-
-```env
-# 选择默认使用的模型提供商：dashscope / zhipu / deepseek / moonshot
-AI_PROVIDER=dashscope
-
-# 通义千问 (推荐，获取地址：https://dashscope.console.aliyun.com/)
-DASHSCOPE_API_KEY=your_api_key_here
-DASHSCOPE_MODEL=qwen-plus
-```
-
-### 3. 启动开发服务器
+### 2. 启动开发服务器
 
 ```bash
 npm run dev
 ```
 
-打开浏览器访问 [http://localhost:3000](http://localhost:3000)
+打开浏览器访问 [http://localhost:3000](http://localhost:3000)，点击左下角设置按钮，选择模型提供商并填入 API Key。
 
-## 📦 部署方式
+### 3. 获取 API Key
 
-### 方式一：Vercel 部署（推荐）
+| 提供商 | 申请地址 | 推荐模型 |
+|--------|---------|----------|
+| 通义千问 | [dashscope.console.aliyun.com](https://dashscope.console.aliyun.com/apiKey) | qwen-plus |
+| 智谱 AI | [open.bigmodel.cn](https://open.bigmodel.cn/usercenter/apikeys) | glm-4-flash |
+| DeepSeek | [platform.deepseek.com](https://platform.deepseek.com/api_keys) | deepseek-v4-pro |
+| Moonshot | [platform.moonshot.cn](https://platform.moonshot.cn/console/api-keys) | moonshot-v1-8k |
 
-1. 将项目推送到 GitHub
-2. 在 [Vercel](https://vercel.com) 导入项目
-3. 在 Vercel 的 Settings → Environment Variables 中配置 API Key
-4. 点击 Deploy，等待部署完成
+## 部署方式
 
-### 方式二：Docker 部署
+### Vercel 部署（推荐）
+
+1. 点击上方 "Deploy with Vercel" 按钮，或在 [vercel.com/new](https://vercel.com/new) 导入此仓库
+2. 无需任何额外配置，直接 Deploy
+3. 部署完成后在网页设置中填入 API Key 即可使用
+
+### Docker 部署
 
 ```bash
-# 构建镜像
-docker build -t ai-chat .
-
-# 运行容器
-docker run -p 3000:3000 \
-  -e AI_PROVIDER=dashscope \
-  -e DASHSCOPE_API_KEY=your_key \
-  ai-chat
+docker build -t sparkai .
+docker run -p 3000:3000 sparkai
 ```
 
-### 方式三：自建服务器部署
+### 自建服务器
 
 ```bash
 npm run build
 npm start
 ```
 
-建议使用 PM2 或 systemd 管理进程：
+建议使用 PM2 管理进程：`pm2 start npm --name "sparkai" -- start`
 
-```bash
-# 使用 PM2
-npm install -g pm2
-pm2 start npm --name "ai-chat" -- start
+## 技术架构
 
-# 使用 systemd (创建 /etc/systemd/system/ai-chat.service)
-```
+- **前端**: React 18 + Tailwind CSS + Zustand
+- **框架**: Next.js 14 App Router (Node.js Runtime)
+- **语言**: TypeScript
+- **AI**: OpenAI 兼容接口，SSE 流式响应
+- **部署**: Vercel / Docker / 自建服务器
 
-## 🛠 技术架构
-
-```
-┌─────────────────────────────────────────────┐
-│              Next.js 14 App Router           │
-├──────────────┬──────────────────────────────┤
-│   Frontend   │          Backend              │
-│              │                              │
-│  React 18    │  /api/chat (Edge Runtime)    │
-│  Tailwind CSS│  /api/conversations          │
-│  Zustand     │  Middleware (Rate Limit)     │
-│  Markdown    │  AI Provider Adapter         │
-├──────────────┴──────────────────────────────┤
-│         AI Provider Layer                    │
-│  ┌────────┬────────┬──────────┬─────────┐   │
-│  │ 通义   │ 智谱   │ DeepSeek │Moonshot │   │
-│  │ 千问   │ GLM    │          │ (Kimi)  │   │
-│  └────────┴────────┴──────────┴─────────┘   │
-└─────────────────────────────────────────────┘
-```
-
-## 📁 项目结构
+## 项目结构
 
 ```
-ai-chat/
+sparkai/
 ├── src/
 │   ├── app/
-│   │   ├── api/
-│   │   │   ├── chat/route.ts        # AI 对话 API（流式）
-│   │   │   └── conversations/route.ts # 会话管理 API
-│   │   ├── layout.tsx               # 根布局
-│   │   ├── page.tsx                 # 主页
-│   │   └── globals.css              # 全局样式
+│   │   ├── api/chat/route.ts       # AI 对话 API（流式 SSE）
+│   │   ├── api/diag/route.ts       # 连接诊断 API
+│   │   ├── layout.tsx              # 根布局
+│   │   ├── page.tsx                # 主页
+│   │   └── globals.css             # 全局样式 + 主题变量
 │   ├── components/
 │   │   ├── chat/
-│   │   │   ├── chat-area.tsx        # 聊天主区域
-│   │   │   ├── chat-input.tsx       # 输入框组件
-│   │   │   ├── message-list.tsx     # 消息列表
-│   │   │   └── message-item.tsx     # 单条消息（含 Markdown）
+│   │   │   ├── chat-area.tsx       # 聊天主区域 + 流式处理
+│   │   │   ├── chat-input.tsx      # 输入框
+│   │   │   ├── message-list.tsx    # 消息列表
+│   │   │   ├── message-item.tsx    # 消息渲染（含思考过程）
+│   │   │   └── settings-modal.tsx  # 设置面板
 │   │   └── layout/
-│   │       └── sidebar.tsx          # 侧边栏（会话管理）
+│   │       └── sidebar.tsx         # 侧边栏
 │   ├── lib/
 │   │   ├── ai-provider.ts          # AI 模型适配层
-│   │   ├── store.ts                # 状态管理（Zustand）
+│   │   ├── store.ts                # Zustand 状态管理
 │   │   └── utils.ts                # 工具函数
-│   ├── types/
-│   │   └── index.ts                # TypeScript 类型定义
-│   └── middleware.ts               # 安全中间件
-├── .env.local.example              # 环境变量模板
+│   ├── types/index.ts              # TypeScript 类型
+│   └── middleware.ts               # 速率限制中间件
+├── vercel.json                     # Vercel 部署配置
 ├── Dockerfile                      # Docker 构建文件
-├── package.json
-├── tailwind.config.js
-└── tsconfig.json
+└── package.json
 ```
 
-## 🔧 支持的 AI 模型
-
-| 提供商 | 环境变量 | 可用模型 |
-|--------|---------|----------|
-| 通义千问 | `DASHSCOPE_API_KEY` | qwen-turbo, qwen-plus, qwen-max, qwen-long |
-| 智谱 AI | `ZHIPU_API_KEY` | glm-4-flash, glm-4, glm-4-plus, glm-4-long |
-| DeepSeek | `DEEPSEEK_API_KEY` | deepseek-chat, deepseek-reasoner |
-| Moonshot | `MOONSHOT_API_KEY` | moonshot-v1-8k, moonshot-v1-32k, moonshot-v1-128k |
-
-## 📄 License
+## License
 
 MIT
